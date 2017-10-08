@@ -2,9 +2,12 @@
 Pouch-pad
 ===
 
+[view config](http://localhost:5984/_utils/)
+create admin!
+
 Todo
 ---
-try pouch-server 
+[try pouchdb-server](https://github.com/pouchdb/pouchdb-server)
 
 Changelog
 ---

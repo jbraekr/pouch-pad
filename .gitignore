@@ -3,6 +3,7 @@
 /node_modules/
 /package-lock.json
 /.db
+/config.json
 
 # crapprotector if accidental in current directory
 /_replicator/

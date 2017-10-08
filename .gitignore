@@ -2,6 +2,9 @@
 /log*
 /node_modules/
 /package-lock.json
+/.db
+
+# crapprotector if accidental in current directory
 /_replicator/
 /_users/
 /pouch__all_dbs__/

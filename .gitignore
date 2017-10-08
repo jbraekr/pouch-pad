@@ -1,3 +1,7 @@
 /pad*
-/node_modules
+/log*
+/node_modules/
 /package-lock.json
+/_replicator/
+/_users/
+/pouch__all_dbs__/

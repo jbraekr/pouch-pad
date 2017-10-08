@@ -4,7 +4,7 @@ Pouch-pad
 
 Todo
 ---
-[socket-pouch probieren](https://github.com/pouchdb-community/socket-pouch)
+try pouch-server 
 
 Changelog
 ---

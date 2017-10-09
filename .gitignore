@@ -2,8 +2,10 @@
 /log*
 /node_modules/
 /package-lock.json
-/.db
 /config.json
+
+/.db/*
+!/.db/.placeholder
 
 # crapprotector if accidental in current directory
 /_replicator/

@@ -7,4 +7,4 @@ var app = express();
 app.use('/', require('express-pouchdb')(PouchDB,{
 }));
 
-app.listen(3001);
+app.listen(5984);

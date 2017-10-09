@@ -9,3 +9,6 @@
 /_replicator/
 /_users/
 /pouch__all_dbs__/
+
+# crapdb
+/test/

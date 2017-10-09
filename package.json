@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
+    "fauxton": "fauxton",
     "standalone": "pouchdb-server --dir .db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +14,7 @@
   "dependencies": {
     "express": "^4.16.1",
     "express-pouchdb": "^2.3.7",
+    "fauxton": "^1.1.13",
     "pouchdb": "^6.3.4",
     "pouchdb-server": "^2.3.7"
   }

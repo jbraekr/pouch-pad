@@ -10,7 +10,9 @@ var TempPouchDB = PouchDB.defaults({
 
 var db = new TempPouchDB('kittens');
 
-app.use('/', require('express-pouchdb')(TempPouchDB, {
+app.use('/',
+  require('cors')({ origin: "*" }),
+  require('express-pouchdb')(TempPouchDB, {
     configPath: '.db/config.json',
     logPath: '.db/log.txt',
   }));

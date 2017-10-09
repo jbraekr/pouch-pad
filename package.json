@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js --dir .db",
+    "start": "node app.js",
     "standalone": "pouchdb-server --dir .db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

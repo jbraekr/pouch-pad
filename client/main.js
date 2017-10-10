@@ -9,8 +9,8 @@ async function f() {
     console.log(info);
     try {
         var doc = await db.get("mittens");
-    } catch (e) {
-        console.log("catched", e);
+    } catch (err) {
+        if (err.name !== 'not_found') throw e;
         var doc = {
             "_id": "mittens",
             "visited": new Date(),

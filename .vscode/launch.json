@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "c Launch Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceRoot}"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "s Launch server",
@@ -15,6 +22,16 @@
             "request": "launch",
             "name": "d Launch db",
             "program": "${workspaceFolder}/db.js"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Compound",
+            "configurations": [
+                "d Launch db",
+                "s Launch server",
+                "c Launch Chrome"
+            ]
         }
     ]
 }

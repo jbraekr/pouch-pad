@@ -8,7 +8,7 @@ var TempPouchDB = PouchDB.defaults({
   prefix: '.db/',
 });
 
-var db = new TempPouchDB('kittens');
+var db = new TempPouchDB('kittens', { auto_compaction: true });
 
 app.use('/',
   require('cors')({ origin: "*" }),

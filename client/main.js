@@ -39,10 +39,15 @@ function sync(){
         retry: true
     }).on('change', function (change) {
         // yo, something changed!
-        console.log('sync change', change);
+        console.log("change", change.direction, change.change, new Date().toJSON());
+        if (change.direction == "pull") {
+            show(change.change.docs);
+        } else {
+            show(change.change.docs);
+        }
     }).on('paused', function (info) {
         // replication was paused, usually because of a lost connection
-        console.log('sync paused', info);
+        //console.log('sync paused', info);
     }).on('active', function (info) {
         // replication was resumed
         console.log('sync active', info);
@@ -66,10 +71,15 @@ async function test(){
             "born": new Date(),
         }
     }
-    console.log(doc);
+    console.log("test", doc);
     Object.assign(doc, {
         "visited": new Date(),
     });
     await db.put(doc);
-    console.log(doc);
+    console.log("test", doc);
+}
+
+function show(docs) {
+    console.log("docs", docs);
+    console.log(JSON.stringify([new Date(docs[0].visited), docs[0]._id]));
 }

@@ -1,21 +1,35 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <script src="//cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js"></script>
 </head>
 
-<body>Edit
-    <hr>
-    <div contenteditable="true"></div>
-    <hr>
-    <div>
-        <a href="/index.html" target="_blank">Dup</a>&nbsp; &nbsp;
-        <a href="http://localhost:5984/_utils/#database/kittens/_all_docs">PouchDB Server kittens</a>&nbsp; &nbsp;
-        <a href="http://localhost:5984/kittens">localhost:5984/kittens</a>&nbsp; &nbsp;
-        <a href="http://localhost:5984/_utils/#login?urlback=">PouchDB Serverlogin</a>&nbsp; &nbsp;
-        <a href="https://pouchdb.com/guides/databases.html">Working with databases</a>
+<body>
+    <div>Edit
+        <hr>
+        <div contenteditable="true"></div>
+        <hr>
+        <button onclick="test()">push</button>
+        <hr>
+        <div>
+            <a href="/index.html" target="_blank">Dup</a>&nbsp; &nbsp;
+            <a href="https://uhr.ptb.de/">PTB Uhr</a>&nbsp; &nbsp;
+            <a href="http://localhost:5984/_utils/#database/kittens/_all_docs">PouchDB Server kittens</a>&nbsp; &nbsp;
+            <a href="http://localhost:5984/kittens">localhost:5984/kittens</a>&nbsp; &nbsp;
+            <a href="http://localhost:5984/_utils/#login?urlback=">PouchDB Server Login</a>&nbsp; &nbsp;
+            <a href="https://pouchdb.com/guides/databases.html">Working with databases</a>
+        </div>
+        <hr>
     </div>
+    <pre id="echo"></pre>
+    <script src="config.js"></script>
     <script src="main.js"></script>
+
+
+
+
 
 
 </body>

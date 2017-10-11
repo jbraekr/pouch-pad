@@ -15,7 +15,10 @@
             "type": "node",
             "request": "launch",
             "name": "s Launch server",
-            "program": "${workspaceFolder}/server.js"
+            "program": "${workspaceFolder}/server.js",
+            "env": {
+                "DB":"http://192.168.43.193:5984/kittens"
+            }
         },
         {
             "type": "node",

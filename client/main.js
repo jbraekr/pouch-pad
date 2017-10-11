@@ -1,5 +1,5 @@
 console.log('sourcelink');
-var remoteDB = new PouchDB('http://localhost:5984/kittens', {
+var remoteDB = new PouchDB(config.db, {
     ajax: {
         withCredentials: false,
         auto_compaction: true,
@@ -62,23 +62,25 @@ function sync() {
 
 
 async function test() {
+    var now = new Date();
     try {
         var doc = await db.get("mittens");
     } catch (err) {
         if (err.name !== 'not_found') throw e;
         var doc = {
             "_id": "mittens",
-            "visited": new Date(),
+            "visited": now,
             "name": "Mittens",
-            "born": new Date(),
+            "born": now,
         }
     }
     console.log("test", doc);
     Object.assign(doc, {
-        "visited": new Date(),
+        "visited": now,
     });
     await db.put(doc);
     console.log("test", doc);
+    document.getElementById("echo").innerText = JSON.stringify(["push", now.toJSON()], null, 2);
 }
 
 
@@ -93,7 +95,10 @@ async function show(first) {
     console.log("show", first)
     try {
         var doc = await db.get("mittens");
-        console.log(doc, form(new Date() - new Date(doc.visited), 8) + " ms ago");
+        var now = new Date();
+        var lag = form(now - new Date(doc.visited), 8) + " ms ago";
+        console.log(doc, lag);
+        document.getElementById("echo").innerText = JSON.stringify([lag, now.toJSON(), doc], null, 2);
         if (first) {
             console.log("setup scene");
         }

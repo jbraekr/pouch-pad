@@ -20,6 +20,7 @@ async function start() {
 
     db.replicate.from(remoteDB).on('complete', function(info) {
         console.log("first sync",info);
+        firstShow();
         sync();
         test();
     }).on('error', function(err) {
@@ -40,10 +41,8 @@ function sync(){
     }).on('change', function (change) {
         // yo, something changed!
         console.log("change", change.direction, change.change, new Date().toJSON());
-        if (change.direction == "pull") {
-            show(change.change.docs);
-        } else {
-            show(change.change.docs);
+        if (change.direction === "pull") {
+            show();
         }
     }).on('paused', function (info) {
         // replication was paused, usually because of a lost connection
@@ -79,7 +78,29 @@ async function test(){
     console.log("test", doc);
 }
 
-function show(docs) {
-    console.log("docs", docs);
-    console.log(JSON.stringify([new Date(docs[0].visited), docs[0]._id]));
+
+
+
+function firstShow() {
+    //setup scene
+    show(true);
+}
+
+async function show(first) {
+    console.log("show",first)
+    try {
+        var doc = await db.get("mittens");
+        console.log(doc,form(new Date() - new Date(doc.visited),8)+" ms ago");
+        if (first) {
+            console.log("setup scene");            
+        }
+        //update scene
+    } catch (err) {
+        console.log("show");
+        console.log(err);
+    }
+}
+
+function form(int, digits) {
+    return int.toLocaleString("en",{minimumIntegerDigits:digits});
 }

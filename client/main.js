@@ -1,11 +1,14 @@
 console.log('sourcelink');
 var remoteDB = new PouchDB('http://localhost:5984/kittens', {
     ajax: {
-        withCredentials: false
+        withCredentials: false,
+        auto_compaction: true,
     }
 });
 
-var db = new PouchDB('kittens');
+var db = new PouchDB('kittens', {
+    auto_compaction: true
+});
 
 start();
 
@@ -18,12 +21,12 @@ async function start() {
     var info = await db.info();
     console.log("local", info);
 
-    db.replicate.from(remoteDB).on('complete', function(info) {
-        console.log("first sync",info);
+    db.replicate.from(remoteDB).on('complete', function (info) {
+        console.log("first sync", info);
         firstShow();
         sync();
         test();
-    }).on('error', function(err) {
+    }).on('error', function (err) {
         console.log("first sync error");
         console.log(err);
         sync();
@@ -34,7 +37,7 @@ async function start() {
 
 
 
-function sync(){
+function sync() {
     db.sync(remoteDB, {
         live: true,
         retry: true
@@ -58,7 +61,7 @@ function sync(){
 }
 
 
-async function test(){
+async function test() {
     try {
         var doc = await db.get("mittens");
     } catch (err) {
@@ -87,12 +90,12 @@ function firstShow() {
 }
 
 async function show(first) {
-    console.log("show",first)
+    console.log("show", first)
     try {
         var doc = await db.get("mittens");
-        console.log(doc,form(new Date() - new Date(doc.visited),8)+" ms ago");
+        console.log(doc, form(new Date() - new Date(doc.visited), 8) + " ms ago");
         if (first) {
-            console.log("setup scene");            
+            console.log("setup scene");
         }
         //update scene
     } catch (err) {
@@ -102,5 +105,5 @@ async function show(first) {
 }
 
 function form(int, digits) {
-    return int.toLocaleString("en",{minimumIntegerDigits:digits});
+    return int.toLocaleString("en", { minimumIntegerDigits: digits });
 }

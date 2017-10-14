@@ -15,7 +15,7 @@ var db = new TempPouchDB('kittens', { auto_compaction: true });
   Message: "MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 destroyed listeners added. Use emitter.setMaxListeners() to increase limit"
   */
 
-app.use('/',
+app.use('/db',
   require('cors')({ origin: "*" }),
   require('express-pouchdb')(TempPouchDB, {
     configPath: '.db/config.json',

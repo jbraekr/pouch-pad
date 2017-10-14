@@ -19,6 +19,7 @@ start();
 
 
 async function start() {
+    document.getElementById("status").innerText = document.origin + '\n' + config.db;
     var info = await remoteDB.info();
     console.log("remote", info);
     var info = await db.info();

@@ -15,7 +15,7 @@
             "type": "node",
             "request": "launch",
             "name": "s Launch server",
-            "program": "${workspaceFolder}/server.js",
+            "program": "${workspaceFolder}/db.js",
             "env": {
                 "DB":"http://192.168.43.193:3000/db/kittens"
             }

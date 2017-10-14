@@ -22,4 +22,4 @@ app.use('/',
     logPath: '.db/log.txt',
   }));
 
-app.listen(5984);
+app.listen(3000);//5984

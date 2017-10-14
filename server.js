@@ -19,4 +19,7 @@ app.get("/config.js", function (request, response) {
 app.use(express.static('public'));
 app.use(express.static('client'));
 
-app.listen(3000);
+var port = 3001;
+app.listen(port);
+
+console.log(port,process.env.DB);

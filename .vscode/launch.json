@@ -17,7 +17,7 @@
             "name": "s Launch server",
             "program": "${workspaceFolder}/server.js",
             "env": {
-                "DB":"http://192.168.43.193:5984/kittens"
+                "DB":"http://192.168.43.193:3000/kittens"
             }
         },
         {

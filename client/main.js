@@ -25,7 +25,7 @@ async function start() {
         console.log("first sync", info);
         firstShow();
         sync();
-        test();
+        //test();
     }).on('error', function (err) {
         console.log("first sync error");
         console.log(err);

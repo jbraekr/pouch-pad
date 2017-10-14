@@ -14,8 +14,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "s Launch server",
-            "program": "${workspaceFolder}/db.js",
+            "name": "x Launch with external db",
+            "program": "${workspaceFolder}/server.js",
             "env": {
                 "DB":"http://192.168.43.193:3000/db/kittens"
             }
@@ -23,8 +23,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "d Launch db",
-            "program": "${workspaceFolder}/db.js"
+            "name": "i Launch with internal db",
+            "program": "${workspaceFolder}/server.js"
         }
     ],
     "compounds": [

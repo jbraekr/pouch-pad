@@ -2,28 +2,38 @@
 Pouch-pad
 ===
 
-Standalone server
----
-pouchdb-server --dir .db
-[view config](http://localhost:5984/_utils/)
-create admin!
+First: create admin!
 
-Seperate db server
----
-[view db status](http://localhost:3001)
-[view config](http://localhost:3001/_utils/
 
-app-server
+Standalone server without server.js
 ---
-[view](http://localhost:3000)
+    npm run standalone
+- [view db status](http://localhost:5984/)
+- [view config](http://localhost:5984/_utils/)
+
+
+Local server with internal db
+---
+    npm start
+- [view db status](http://localhost:3000/db/)
+- [view config](http://localhost:3000/_utils/)
+- [view app](http://localhost:3000)
+
+
+Local server with external db
+---
+    #set env.DB in shell to database, like http://localhost:3000/db/kittens
+
+    npm start
+- [view app](http://localhost:3001)
 
 Todo
 ---
-[workaround gui path problem](https://github.com/pouchdb/pouchdb-server/issues/180)
+- make glitch ready
 
 Changelog
 ---
-
+- [workaround gui path problem](https://github.com/pouchdb/pouchdb-server/issues/180)
 - tried pouchdb-server and run by js
 - empty .gitignore
 - readme.md

@@ -18,16 +18,27 @@ var db = new TempPouchDB('kittens', { auto_compaction: true });
 app.use(function (req, res, next) {
   if (!/^\/db\//.test(req.url)) {
     console.log(req.url);
-    if (/^\/_session$/.test(req.url)) {
-      console.log('session');
-      req.url = req.originalUrl = '/db/_session';
-    } else
-      if (/^\/$/.test(req.url)) req.url = req.originalUrl = '/db';
-      else req.url = req.originalUrl = '/db' + req.url;
+    if (!/^(\/$|\/index.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
     console.log('->', req.url);
   }
   next();
 });
+
+app.get("/", function (request, response) {
+  response.redirect('/index.html');
+});
+app.get("/index.html", function (request, response) {
+  response.sendFile(__dirname + '/views/index.html');
+});
+
+app.get("/c/config.js", function (request, response) {
+  response.send(`
+    var config = ${JSON.stringify({ db: '/db/kittens' }, null, 2)};
+  `);
+});
+
+app.use('/c',express.static('public'));
+app.use('/c',express.static('client'));
 
 app.use('/db',
   require('cors')({ origin: "*" }),

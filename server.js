@@ -10,14 +10,14 @@ app.get("/", function (request, response) {
   response.redirect('index.html');
 });
 
-app.get("/config.js", function (request, response) {
+app.get("/c/config.js", function (request, response) {
   response.send(`
     var config = ${JSON.stringify({ db: process.env.DB }, null, 2)};
   `);
 });
 
-app.use(express.static('public'));
-app.use(express.static('client'));
+app.use('/c',express.static('public'));
+app.use('/c',express.static('client'));
 
 var port = 3001;
 app.listen(port);

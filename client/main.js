@@ -1,4 +1,7 @@
 console.log('sourcelink');
+
+if (/^\//.test(config.db)) config.db = document.origin + config.db;
+
 var remoteDB = new PouchDB(config.db, {
     ajax: {
         withCredentials: false,

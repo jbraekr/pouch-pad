@@ -2,6 +2,8 @@ console.log('sourcelink');
 
 if (/^\//.test(config.db)) config.db = document.origin + config.db;
 
+var main = {};
+
 var remoteDB = new PouchDB(config.db, {
     ajax: {
         withCredentials: false,
@@ -19,11 +21,39 @@ start();
 
 
 async function start() {
-    document.getElementById("status").innerText = document.origin + '\n' + config.db;
+    status();
     var info = await remoteDB.info();
     console.log("remote", info);
     var info = await db.info();
     console.log("local", info);
+
+    var now = new Date();
+
+    try {
+        main.local = await db.get('_local/me');
+    } catch (err) {
+        if (err.name !== 'not_found') throw e;
+        main.local = {
+            name: 'kitten/' + now.toJSON(),
+            _id: "_local/me",
+        };
+        await db.put(main.local);
+    }
+
+    try {
+        var doc = await db.get(main.local.name);
+    } catch (err) {
+        if (err.name !== 'not_found') throw e;
+        var doc = {
+            "_id": main.local.name,
+        }
+    }
+    Object.assign(doc, {
+        "wokeUp": now,
+    });
+    await db.put(doc);
+
+    status();
 
     db.replicate.from(remoteDB).on('complete', function (info) {
         console.log("first sync", info);
@@ -54,8 +84,12 @@ function sync() {
     }).on('paused', function (info) {
         // replication was paused, usually because of a lost connection
         //console.log('sync paused', info);
+        main.net = "paused";
+        status();
     }).on('active', function (info) {
         // replication was resumed
+        main.net = "active";
+        status();
         console.log('sync active', info);
     }).on('error', function (err) {
         // totally unhandled error (shouldn't happen)
@@ -63,6 +97,9 @@ function sync() {
         console.log(err);
     });
 }
+
+
+
 
 
 async function test() {
@@ -85,6 +122,16 @@ async function test() {
     await db.put(doc);
     console.log("test", doc);
     document.getElementById("echo").innerText = JSON.stringify(["push", now.toJSON()], null, 2);
+}
+
+
+
+
+function status() {
+    var a = [`${document.origin}\n${config.db}\nnet: ${main.net}`];
+    if (main.local)
+        a.push(`name: ${JSON.stringify(main.local.name)}`);
+    document.getElementById("status").innerText = a.join('\n');
 }
 
 
@@ -113,6 +160,10 @@ async function show(first) {
     }
 }
 
+
+
+
 function form(int, digits) {
     return int.toLocaleString("en", { minimumIntegerDigits: digits });
 }
+

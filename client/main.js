@@ -30,20 +30,22 @@ async function start() {
     var now = new Date();
 
     try {
-        main.local = await db.get('_local/me');
+        var s2 = JSON.parse(sessionStorage.getItem('me'));
+        if (!s2.name) throw "need fresh me";
+        main.local = s2;
     } catch (err) {
-        if (err.name !== 'not_found') throw e;
+        console.log("ignore");
+        console.log(err);
         main.local = {
             name: 'kitten/' + now.toJSON(),
-            _id: "_local/me",
         };
-        await db.put(main.local);
+        sessionStorage.setItem('me', JSON.stringify(main.local));
     }
 
     try {
         var doc = await db.get(main.local.name);
     } catch (err) {
-        if (err.name !== 'not_found') throw e;
+        if (err.name !== 'not_found') throw err;
         var doc = {
             "_id": main.local.name,
         }
@@ -57,9 +59,10 @@ async function start() {
 
     db.replicate.from(remoteDB).on('complete', function (info) {
         console.log("first sync", info);
+        main.net = "complete";
+        status();
         firstShow();
         sync();
-        //test();
     }).on('error', function (err) {
         console.log("first sync error");
         console.log(err);
@@ -112,14 +115,13 @@ async function test() {
         if (err.name !== 'not_found') throw e;
         var doc = {
             "_id": "mittens",
-            "visited": now,
             "name": "Mittens",
             "born": now,
         }
     }
     console.log("test", doc);
     Object.assign(doc, {
-        "visited": now,
+        "visited": { at: now, by: main.local.name },
     });
     await db.put(doc);
     console.log("test", doc);
@@ -149,7 +151,7 @@ async function show(first) {
     try {
         var doc = await db.get("mittens");
         var now = new Date();
-        var lag = form(now - new Date(doc.visited), 8) + " ms ago";
+        var lag = "Mittens visited " + form(now - new Date(doc.visited.at), 8) + " ms ago";
         console.log(doc, lag);
         document.getElementById("echo").innerText = JSON.stringify([lag, now.toJSON(), doc], null, 2);
         if (first) {

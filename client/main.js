@@ -80,6 +80,8 @@ function sync() {
         console.log("change", change.direction, change.change, new Date().toJSON());
         if (change.direction === "pull") {
             show();
+        } else {
+            show(); //push can be other tab!
         }
     }).on('paused', function (info) {
         // replication was paused, usually because of a lost connection

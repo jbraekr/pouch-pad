@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "request": "launch",
+            "name": "i Launch with internal db",
+            "program": "${workspaceFolder}/server.js"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "c Launch Chrome",
@@ -17,14 +23,8 @@
             "name": "x Launch with external db",
             "program": "${workspaceFolder}/server.js",
             "env": {
-                "DB":"http://192.168.43.193:3000/db/kittens"
+                "DB": "http://192.168.43.193:3000/db/kittens"
             }
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "i Launch with internal db",
-            "program": "${workspaceFolder}/server.js"
         }
     ],
     "compounds": [

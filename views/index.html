@@ -21,22 +21,32 @@
         <div style="line-height: 200%">
             <button onclick="test()">Visit Mittens</button>&nbsp; &nbsp;
             <a href="/index.html" target="_blank">Dup</a>&nbsp; &nbsp;
+            <a href="/c/aframe.html" target="_blank">AFrame</a>&nbsp; &nbsp;
             <a href="https://time.is/" target="_blank">Time.is</a>&nbsp; &nbsp;
             <a href="/_utils/" target="_blank">Local Fauxton</a>&nbsp; &nbsp;
             <a href="https://uhr.ptb.de/" target="_blank">PTB Uhr</a>&nbsp; &nbsp;
             <a href="https://pouchdb.com/guides/databases.html" target="_blank">Working with databases</a>
+            <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
         </div>
     </div>
-    <pre id="status">DB?</pre>
+
+    <hr>
+    <div>
+        <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false">
+            <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
+        </a-scene>
+    </div>
+    
+    <hr>
+    <pre id="status">Setting up</pre>
     <hr>
     <pre id="echo"></pre>
+
     <script src="/c/config.js"></script>
+    <script src="/c/lib.js"></script>
     <script src="/c/main.js"></script>
 
     <hr>
-
-
-
 
 
 

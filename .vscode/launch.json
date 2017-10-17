@@ -31,8 +31,7 @@
         {
             "name": "Compound",
             "configurations": [
-                "d Launch db",
-                "s Launch server",
+                "i Launch with internal db",
                 "c Launch Chrome"
             ]
         }

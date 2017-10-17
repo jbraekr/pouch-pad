@@ -1,6 +1,8 @@
 console.log(__filename);
 var express = require('express');
 var app = express();
+var fs = require('fs');
+var util = require('util');
 
 if (process.env.DB) {
   var ownPouch = false;
@@ -14,11 +16,7 @@ if (process.env.DB) {
 
 
 app.use(function (req, res, next) {
-  if (!/^\/db\//.test(req.url)) {
-    //console.log(req.url);
-    if (!/^(\/$|\/index.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
-    //console.log('->', req.url);
-  }
+  if (!/^(\/db|\/$|\/\w*.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
   next();
 });
 
@@ -27,6 +25,11 @@ app.get("/", function (request, response) {
 });
 app.get("/index.html", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
+});
+
+app.get("/aframe.html", async function (request, response) {
+  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+  response.send(s);
 });
 
 app.get("/c/config.js", function (request, response) {
@@ -71,4 +74,4 @@ if (!ownPouch) {
 
 var port = process.env.PORT || port;
 app.listen(port);//5984
-console.log(port,ownPouch,dbUrl);
+console.log(port, ownPouch, dbUrl);

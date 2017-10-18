@@ -18,6 +18,7 @@
     "jsdom": "^11.3.0",
     "pouchdb": "^6.3.4",
     "pouchdb-server": "^2.3.7",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "util.promisify": "^1.0.0"
   }
 }

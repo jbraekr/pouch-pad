@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var util = require('util');
+const promisify = require('util.promisify'); //pre 8 compat
 
 if (process.env.DB) {
   var ownPouch = false;
@@ -38,7 +39,7 @@ app.get("/aframe.html", async function (request, response) {
 });
 
 async function aframify() {
-  var s = await util.promisify(fs.readFile)(root + '/views/index.html', 'utf8');
+  var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
   const jsdom = require("jsdom");
   const dom = new jsdom.JSDOM(s);
   const doc = dom.window.document;

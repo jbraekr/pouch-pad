@@ -132,7 +132,7 @@ async function test() {
 
 
 function status() {
-    var a = [`${document.origin}\n${config.db}\nnet: ${main.net}`];
+    var a = [`${document.origin} node ${config.node}\n${config.db}\nnet: ${main.net}`];
     if (main.local)
         a.push(`name: ${JSON.stringify(main.local.name)}`);
     document.getElementById("status").innerText = a.join('\n');

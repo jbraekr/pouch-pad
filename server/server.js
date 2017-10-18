@@ -15,6 +15,8 @@ if (process.env.DB) {
 var root = process.cwd();
 
 
+
+
 app.use(function (req, res, next) {
   if (!/^(\/db|\/$|\/\w*.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
   next();
@@ -26,6 +28,9 @@ app.get("/", function (request, response) {
 app.get("/index.html", function (request, response) {
   response.sendFile(root + '/views/index.html');
 });
+
+
+
 
 app.get("/aframe.html", async function (request, response) {
   var s = await aframify();
@@ -58,9 +63,12 @@ async function aframify() {
   console.log(s)
 })(); //test
 
+
+
+
 app.get("/c/config.js", function (request, response) {
   response.send(`
-    var config = ${JSON.stringify({ db: dbUrl }, null, 2)};
+    var config = ${JSON.stringify({ db: dbUrl, node: process.version }, null, 2)};
   `);
 });
 

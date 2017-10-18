@@ -112,7 +112,7 @@ async function test() {
     try {
         var doc = await db.get("mittens");
     } catch (err) {
-        if (err.name !== 'not_found') throw e;
+        if (err.name !== 'not_found') throw err;
         var doc = {
             "_id": "mittens",
             "name": "Mittens",

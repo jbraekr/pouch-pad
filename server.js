@@ -28,9 +28,29 @@ app.get("/index.html", function (request, response) {
 });
 
 app.get("/aframe.html", async function (request, response) {
-  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+  var s = await aframify();
   response.send(s);
 });
+
+async function aframify() {
+  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+  const jsdom = require("jsdom");
+  const dom = new jsdom.JSDOM(s);
+  const doc = dom.window.document;
+  doc.querySelector('#copy').remove();
+  doc.querySelector('#rest').setAttribute('hidden', "true");
+  var s = doc.querySelector('a-scene');
+  s.removeAttribute('vr-mode-ui');
+  s.removeAttribute('embedded');
+  s.removeAttribute('style');
+  var s2 = doc.querySelector('#scene');
+  s2.parentNode.insertBefore(s,s2);
+  s2.remove();
+  //console.log(dom.serialize());
+  return dom.serialize();
+}
+
+//aframify();
 
 app.get("/c/config.js", function (request, response) {
   response.send(`
@@ -75,3 +95,4 @@ if (!ownPouch) {
 var port = process.env.PORT || port;
 app.listen(port);//5984
 console.log(port, ownPouch, dbUrl);
+

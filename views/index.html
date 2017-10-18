@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <script src="//cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js"></script>
     <script src="https://button.glitch.me/button.js"></script>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <title>A pouchdb which syncs a bit</title>
 </head>
@@ -26,27 +27,27 @@
             <a href="/_utils/" target="_blank">Local Fauxton</a>&nbsp; &nbsp;
             <a href="https://uhr.ptb.de/" target="_blank">PTB Uhr</a>&nbsp; &nbsp;
             <a href="https://pouchdb.com/guides/databases.html" target="_blank">Working with databases</a>
-            <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
         </div>
+        <hr>
     </div>
 
-    <hr>
-    <div>
+    <div id="scene">
         <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false">
             <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
         </a-scene>
     </div>
 
-    <hr>
-    <pre id="status">Setting up</pre>
-    <hr>
-    <pre id="echo"></pre>
+    <div id="rest">
+        <hr>
+        <pre id="status">Setting up</pre>
+        <hr>
+        <pre id="echo"></pre>
+    </div>
 
     <script src="/c/config.js"></script>
     <script src="/c/lib.js"></script>
     <script src="/c/main.js"></script>
 
-    <hr>
 
 
 

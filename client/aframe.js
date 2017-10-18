@@ -25,7 +25,7 @@ AFRAME.registerComponent('inspect-immediate', {
         console.log("inspecting");
         this.components.inspector.injectInspector();
       },
-        1 * 1000);
+        2 * 1000);
     });
   }
 });

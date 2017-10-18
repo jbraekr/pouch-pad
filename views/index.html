@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <script src="//cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js"></script>
-    <script src="https://button.glitch.me/button.js"></script>
+    <script id="glitch" src="https://button.glitch.me/button.js"></script>
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <title>A pouchdb which syncs a bit</title>
@@ -31,9 +31,14 @@
         <hr>
     </div>
 
+    <script src="/c/config.js"></script>
+    <script src="/c/aframe.js"></script>
+
     <div id="scene">
         <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false">
             <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
+            <a-text position="0 1.833 -0.5" color="green" align="center" value="dev-info" dev-info=""></a-text>
+<a-camera fix-cam></a-camera>
         </a-scene>
     </div>
 
@@ -44,8 +49,6 @@
         <pre id="echo"></pre>
     </div>
 
-    <script src="/c/config.js"></script>
-    <script src="/c/lib.js"></script>
     <script src="/c/main.js"></script>
 
 

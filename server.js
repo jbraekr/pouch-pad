@@ -37,6 +37,7 @@ async function aframify() {
   const jsdom = require("jsdom");
   const dom = new jsdom.JSDOM(s);
   const doc = dom.window.document;
+  doc.querySelector('#glitch').remove();
   doc.querySelector('#copy').remove();
   doc.querySelector('#rest').setAttribute('hidden', "true");
   var s = doc.querySelector('a-scene');

@@ -32,18 +32,8 @@ app.get("/aframe.html", async function (request, response) {
   response.send(s);
 });
 
-<<<<<<< HEAD:server.js
-app.get("/aframe.html", async function (request, response) {
-  var s = await aframify();
-  response.send(s);
-});
-
-async function aframify() {
-  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
-=======
 async function aframify() {
   var s = await util.promisify(fs.readFile)(root + '/views/index.html', 'utf8');
->>>>>>> 4b951b1244da178b8a9a2ad37cb09ade4f875cc1:server/server.js
   const jsdom = require("jsdom");
   const dom = new jsdom.JSDOM(s);
   const doc = dom.window.document;
@@ -54,14 +44,19 @@ async function aframify() {
   s.removeAttribute('vr-mode-ui');
   s.removeAttribute('embedded');
   s.removeAttribute('style');
+  s.setAttribute('inspect-immediate','');
   var s2 = doc.querySelector('#scene');
-  s2.parentNode.insertBefore(s,s2);
+  s2.parentNode.insertBefore(s, s2);
   s2.remove();
   //console.log(dom.serialize());
   return dom.serialize();
 }
 
-//aframify();
+(async function () {
+  if (true) return;
+  var s = await aframify();
+  console.log(s)
+})(); //test
 
 app.get("/c/config.js", function (request, response) {
   response.send(`

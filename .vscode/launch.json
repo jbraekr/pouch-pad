@@ -7,32 +7,45 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "internal db",
-            "program": "${workspaceFolder}/server.js"
+            "name": "indb",
+            "info": "internal db",
+            "program": "${workspaceFolder}/server/server.js"
         },
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Chrome",
+            "name": "a",
+            "info": "aframe chrome",
+            "url": "http://localhost:3001/aframe.html",
+            "webRoot": "${workspaceRoot}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "c",
+            "info": "chrome",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceRoot}"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "external db",
-            "program": "${workspaceFolder}/server.js",
+            "name": "exdb",
+            "info": "external db",
+            "program": "${workspaceFolder}/server/server.js",
             "env": {
                 "DB": "http://192.168.43.193:3000/db/kittens"
-            }
+            },
+            "showAsyncStacks": true
         }
     ],
     "compounds": [
         {
-            "name": "Compound",
+            "name": "C",
             "configurations": [
-                "internal db",
-                "external db"
+                "indb",
+                "exdb",
+                "c"
             ]
         }
     ]

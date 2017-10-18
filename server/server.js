@@ -12,7 +12,7 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-
+var root = process.cwd();
 
 
 app.use(function (req, res, next) {
@@ -24,7 +24,7 @@ app.get("/", function (request, response) {
   response.redirect('/index.html');
 });
 app.get("/index.html", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+  response.sendFile(root + '/views/index.html');
 });
 
 app.get("/aframe.html", async function (request, response) {
@@ -33,7 +33,7 @@ app.get("/aframe.html", async function (request, response) {
 });
 
 async function aframify() {
-  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+  var s = await util.promisify(fs.readFile)(root + '/views/index.html', 'utf8');
   const jsdom = require("jsdom");
   const dom = new jsdom.JSDOM(s);
   const doc = dom.window.document;

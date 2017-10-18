@@ -1,5 +1,5 @@
 {
-  "files":["server.js"],
+  "files":["server/server.js"],
   "compilerOptions": {
     "allowJs":true,
     "outDir": "es5",

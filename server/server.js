@@ -12,7 +12,7 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-
+var root = process.cwd();
 
 
 app.use(function (req, res, next) {
@@ -24,7 +24,7 @@ app.get("/", function (request, response) {
   response.redirect('/index.html');
 });
 app.get("/index.html", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+  response.sendFile(root + '/views/index.html');
 });
 
 app.get("/aframe.html", async function (request, response) {
@@ -32,8 +32,18 @@ app.get("/aframe.html", async function (request, response) {
   response.send(s);
 });
 
+<<<<<<< HEAD:server.js
+app.get("/aframe.html", async function (request, response) {
+  var s = await aframify();
+  response.send(s);
+});
+
 async function aframify() {
   var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+=======
+async function aframify() {
+  var s = await util.promisify(fs.readFile)(root + '/views/index.html', 'utf8');
+>>>>>>> 4b951b1244da178b8a9a2ad37cb09ade4f875cc1:server/server.js
   const jsdom = require("jsdom");
   const dom = new jsdom.JSDOM(s);
   const doc = dom.window.document;

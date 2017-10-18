@@ -5,35 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "request": "launch",
+            "name": "internal db",
+            "program": "${workspaceFolder}/server.js"
+        },
+        {
             "type": "chrome",
             "request": "launch",
-            "name": "c Launch Chrome",
+            "name": "Chrome",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceRoot}"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "x Launch with external db",
+            "name": "external db",
             "program": "${workspaceFolder}/server.js",
             "env": {
-                "DB":"http://192.168.43.193:3000/db/kittens"
+                "DB": "http://192.168.43.193:3000/db/kittens"
             }
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "i Launch with internal db",
-            "program": "${workspaceFolder}/server.js"
         }
     ],
     "compounds": [
         {
             "name": "Compound",
             "configurations": [
-                "d Launch db",
-                "s Launch server",
-                "c Launch Chrome"
+                "internal db",
+                "external db"
             ]
         }
     ]

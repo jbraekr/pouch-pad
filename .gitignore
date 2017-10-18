@@ -7,6 +7,8 @@
 /.db/*
 !/.db/.placeholder
 
+/es5/
+
 # crapprotector if accidental in current directory
 /_replicator/
 /_users/

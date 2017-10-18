@@ -1,6 +1,8 @@
 console.log(__filename);
 var express = require('express');
 var app = express();
+var fs = require('fs');
+var util = require('util');
 
 if (process.env.DB) {
   var ownPouch = false;
@@ -14,11 +16,7 @@ if (process.env.DB) {
 
 
 app.use(function (req, res, next) {
-  if (!/^\/db\//.test(req.url)) {
-    //console.log(req.url);
-    if (!/^(\/$|\/index.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
-    //console.log('->', req.url);
-  }
+  if (!/^(\/db|\/$|\/\w*.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
   next();
 });
 
@@ -28,6 +26,32 @@ app.get("/", function (request, response) {
 app.get("/index.html", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
+
+app.get("/aframe.html", async function (request, response) {
+  var s = await aframify();
+  response.send(s);
+});
+
+async function aframify() {
+  var s = await util.promisify(fs.readFile)(__dirname + '/views/index.html', 'utf8');
+  const jsdom = require("jsdom");
+  const dom = new jsdom.JSDOM(s);
+  const doc = dom.window.document;
+  doc.querySelector('#glitch').remove();
+  doc.querySelector('#copy').remove();
+  doc.querySelector('#rest').setAttribute('hidden', "true");
+  var s = doc.querySelector('a-scene');
+  s.removeAttribute('vr-mode-ui');
+  s.removeAttribute('embedded');
+  s.removeAttribute('style');
+  var s2 = doc.querySelector('#scene');
+  s2.parentNode.insertBefore(s,s2);
+  s2.remove();
+  //console.log(dom.serialize());
+  return dom.serialize();
+}
+
+//aframify();
 
 app.get("/c/config.js", function (request, response) {
   response.send(`
@@ -71,4 +95,5 @@ if (!ownPouch) {
 
 var port = process.env.PORT || port;
 app.listen(port);//5984
-console.log(port,ownPouch,dbUrl);
+console.log(port, ownPouch, dbUrl);
+

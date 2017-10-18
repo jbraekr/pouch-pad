@@ -2,6 +2,8 @@ console.log('sourcelink');
 
 if (/^\//.test(config.db)) config.db = document.origin + config.db;
 
+var main = {};
+
 var remoteDB = new PouchDB(config.db, {
     ajax: {
         withCredentials: false,
@@ -19,17 +21,48 @@ start();
 
 
 async function start() {
-    document.getElementById("status").innerText = document.origin + '\n' + config.db;
+    status();
     var info = await remoteDB.info();
     console.log("remote", info);
     var info = await db.info();
     console.log("local", info);
 
+    var now = new Date();
+
+    try {
+        var s2 = JSON.parse(sessionStorage.getItem('me'));
+        if (!s2.name) throw "need fresh me";
+        main.local = s2;
+    } catch (err) {
+        console.log("ignore");
+        console.log(err);
+        main.local = {
+            name: 'kitten/' + now.toJSON(),
+        };
+        sessionStorage.setItem('me', JSON.stringify(main.local));
+    }
+
+    try {
+        var doc = await db.get(main.local.name);
+    } catch (err) {
+        if (err.name !== 'not_found') throw err;
+        var doc = {
+            "_id": main.local.name,
+        }
+    }
+    Object.assign(doc, {
+        "wokeUp": now,
+    });
+    await db.put(doc);
+
+    status();
+
     db.replicate.from(remoteDB).on('complete', function (info) {
         console.log("first sync", info);
+        main.net = "complete";
+        status();
         firstShow();
         sync();
-        //test();
     }).on('error', function (err) {
         console.log("first sync error");
         console.log(err);
@@ -50,12 +83,18 @@ function sync() {
         console.log("change", change.direction, change.change, new Date().toJSON());
         if (change.direction === "pull") {
             show();
+        } else {
+            show(); //push can be other tab!
         }
     }).on('paused', function (info) {
         // replication was paused, usually because of a lost connection
         //console.log('sync paused', info);
+        main.net = "paused";
+        status();
     }).on('active', function (info) {
         // replication was resumed
+        main.net = "active";
+        status();
         console.log('sync active', info);
     }).on('error', function (err) {
         // totally unhandled error (shouldn't happen)
@@ -63,6 +102,9 @@ function sync() {
         console.log(err);
     });
 }
+
+
+
 
 
 async function test() {
@@ -73,18 +115,27 @@ async function test() {
         if (err.name !== 'not_found') throw e;
         var doc = {
             "_id": "mittens",
-            "visited": now,
             "name": "Mittens",
             "born": now,
         }
     }
     console.log("test", doc);
     Object.assign(doc, {
-        "visited": now,
+        "visited": { at: now, by: main.local.name },
     });
     await db.put(doc);
     console.log("test", doc);
     document.getElementById("echo").innerText = JSON.stringify(["push", now.toJSON()], null, 2);
+}
+
+
+
+
+function status() {
+    var a = [`${document.origin}\n${config.db}\nnet: ${main.net}`];
+    if (main.local)
+        a.push(`name: ${JSON.stringify(main.local.name)}`);
+    document.getElementById("status").innerText = a.join('\n');
 }
 
 
@@ -100,7 +151,7 @@ async function show(first) {
     try {
         var doc = await db.get("mittens");
         var now = new Date();
-        var lag = form(now - new Date(doc.visited), 8) + " ms ago";
+        var lag = "Mittens visited " + form(now - new Date(doc.visited.at), 8) + " ms ago";
         console.log(doc, lag);
         document.getElementById("echo").innerText = JSON.stringify([lag, now.toJSON(), doc], null, 2);
         if (first) {
@@ -113,6 +164,10 @@ async function show(first) {
     }
 }
 
+
+
+
 function form(int, digits) {
     return int.toLocaleString("en", { minimumIntegerDigits: digits });
 }
+

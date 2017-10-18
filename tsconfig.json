@@ -1,0 +1,10 @@
+{
+  "files":["server.js"],
+  "compilerOptions": {
+    "allowJs":true,
+    "outDir": "es5",
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true
+  }
+}

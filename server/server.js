@@ -13,7 +13,7 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-var root = process.cwd();
+var root = __dirname + '/..';
 
 
 
@@ -40,29 +40,33 @@ app.get("/aframe.html", async function (request, response) {
 
 async function aframify() {
   var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
-  const jsdom = require("jsdom");
-  const dom = new jsdom.JSDOM(s);
-  const doc = dom.window.document;
-  doc.querySelector('#glitch').remove();
-  doc.querySelector('#copy').remove();
-  doc.querySelector('#rest').setAttribute('hidden', "true");
-  var s = doc.querySelector('a-scene');
-  s.removeAttribute('vr-mode-ui');
-  s.removeAttribute('embedded');
-  s.removeAttribute('style');
-  s.setAttribute('inspect-immediate','');
-  var s2 = doc.querySelector('#scene');
-  s2.parentNode.insertBefore(s, s2);
-  s2.remove();
-  //console.log(dom.serialize());
-  return dom.serialize();
+  const $ = require('cheerio').load(s);
+  $('#glitch').remove();
+  $('#copy').remove();
+  $('#rest').attr('hidden', "true");
+  var s = $('a-scene');
+  s.removeAttr('vr-mode-ui');
+  s.removeAttr('embedded');
+  s.removeAttr('style');
+  s.attr('inspect-immediate', '');
+  var s2 = $('#scene');
+  $('#scene').replaceWith(s);
+  return $.html();
 }
 
 (async function () {
-  if (true) return;
-  var s = await aframify();
-  console.log(s)
+  if (!false) return;
+  try {
+    var s = await aframify();
+    console.log(s)
+  } catch (e) {
+    console.log(e);
+  }
 })(); //test
+
+
+
+
 
 
 

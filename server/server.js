@@ -2,6 +2,9 @@ console.log(__filename);
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var path = require("path");
+const cheerio = require('cheerio');
+
 var util = require('util');
 const promisify = require('util.promisify'); //pre 8 compat
 
@@ -13,7 +16,7 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-var root = process.cwd();
+var root = path.join(__dirname, '..');
 
 
 
@@ -34,35 +37,45 @@ app.get("/index.html", function (request, response) {
 
 
 app.get("/aframe.html", async function (request, response) {
-  var s = await aframify();
-  response.send(s);
+  var $ = await aframify();
+  response.send($.html());
+});
+
+app.get("/inspector.html", async function (request, response) {
+  var $ = await aframify();
+  var s = $('a-scene');
+  s.attr('inspect-immediate', '');
+  response.send($.html());
 });
 
 async function aframify() {
   var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
-  const jsdom = require("jsdom");
-  const dom = new jsdom.JSDOM(s);
-  const doc = dom.window.document;
-  doc.querySelector('#glitch').remove();
-  doc.querySelector('#copy').remove();
-  doc.querySelector('#rest').setAttribute('hidden', "true");
-  var s = doc.querySelector('a-scene');
-  s.removeAttribute('vr-mode-ui');
-  s.removeAttribute('embedded');
-  s.removeAttribute('style');
-  s.setAttribute('inspect-immediate','');
-  var s2 = doc.querySelector('#scene');
-  s2.parentNode.insertBefore(s, s2);
-  s2.remove();
-  //console.log(dom.serialize());
-  return dom.serialize();
+  const $ = cheerio.load(s);
+  $('#glitch').remove();
+  $('#copy').remove();
+  $('#rest').attr('hidden', "true");
+  var s = $('a-scene');
+  s.removeAttr('embedded');
+  s.removeAttr('vr-mode-ui');//in template switched off
+  s.removeAttr('style');
+  var s2 = $('#scene');
+  $('#scene').replaceWith(s);
+  return $;
 }
 
 (async function () {
-  if (true) return;
-  var s = await aframify();
-  console.log(s)
+  if (!false) return;
+  try {
+    var s = await aframify();
+    console.log(s.html())
+  } catch (e) {
+    console.log(e);
+  }
 })(); //test
+
+
+
+
 
 
 

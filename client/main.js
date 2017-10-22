@@ -63,6 +63,7 @@ async function start() {
         status();
         firstShow();
         sync();
+        installServiceworker();
     }).on('error', function (err) {
         console.log("first sync error");
         console.log(err);
@@ -135,8 +136,8 @@ function status() {
     var a = [`${document.origin} node ${config.node}\n${config.db}\nnet: ${main.net}`];
     if (main.local)
         a.push(`name: ${JSON.stringify(main.local.name)}`);
-    document.getElementById("status").innerText = a.join('\n');
-}
+        document.getElementById("status").innerText = a.join('\n');
+    }
 
 
 
@@ -171,3 +172,17 @@ function form(int, digits) {
     return int.toLocaleString("en", { minimumIntegerDigits: digits });
 }
 
+
+
+function installServiceworker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope:\n  ',registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed:');
+            console.log(err);
+        });
+    }
+}

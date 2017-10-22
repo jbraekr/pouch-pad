@@ -3,7 +3,6 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var path = require("path");
-const cheerio = require('cheerio');
 
 var util = require('util');
 const promisify = require('util.promisify'); //pre 8 compat
@@ -22,7 +21,7 @@ var root = path.join(__dirname, '..');
 
 
 app.use(function (req, res, next) {
-  if (!/^(\/db|\/$|\/\w*.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
+  if (!/^(\/db|\/$|\/\w*\.html$|\/c\/|\/service-worker\.js$)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
   next();
 });
 
@@ -32,7 +31,9 @@ app.get("/", function (request, response) {
 app.get("/index.html", function (request, response) {
   response.sendFile(root + '/views/index.html');
 });
-
+app.get("/service-worker.js", function (request, response) {
+  response.sendFile(root + '/service-worker.js');
+});
 
 
 
@@ -49,6 +50,7 @@ app.get("/inspector.html", async function (request, response) {
 });
 
 async function aframify() {
+  const cheerio = require('cheerio');
   var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
   const $ = cheerio.load(s);
   $('#glitch').remove();

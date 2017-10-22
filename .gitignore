@@ -1,5 +1,6 @@
 /pad*
 /log*
+*.bak
 /node_modules/
 /package-lock.json
 /config.json

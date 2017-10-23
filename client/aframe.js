@@ -29,7 +29,7 @@ AFRAME.registerComponent('inspect-immediate', {
   }
 });
 
-AFRAME.registerComponent('track-changes', {
+AFRAME.registerComponent('track-add-remove', {
   init: function () {
     this.el.addEventListener('child-attached', function (evt) {
       logEvt('evt child-attached', evt);
@@ -47,11 +47,13 @@ AFRAME.registerComponent('track', {
   init: function () {
     this.el.addEventListener('componentchanged', function (evt) {
       evt.detail.target.flushToDOM();
-      console.log('evt componentchanged', [evt, evt.path], evt.detail.target);
+      //console.log('evt componentchanged', [evt, evt.path], evt.detail.target);
+      pushPouch();
     });
   }
 });
 
 function logEvt(s, evt) {
-  console.log(s, [evt, evt.path], evt.detail.el);
+  //console.log(s, [evt, evt.path], evt.detail.el);
+  pushPouch();
 }

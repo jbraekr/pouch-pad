@@ -17,6 +17,7 @@
 
 
 
+
         </div>
         <h3>A pouchdb which syncs a bit
         </h3>
@@ -26,7 +27,7 @@
         <div style="line-height: 200%">
             <button onclick="test()">Visit Mittens</button>
             &nbsp;&nbsp;
-            <a href="/index.html" target="_blank">Dup</a>
+            <a href="/index.html">Index</a>
             &nbsp;&nbsp;
             <a href="/aframe.html">AFrame</a>
             &nbsp;&nbsp;
@@ -47,17 +48,17 @@
     <script src="/c/config.js"></script>
     <script src="/c/aframe.js"></script>
     <div id="scene">
-        <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false" track-changes>
+        <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false">
             <assets>
                 <a-mixin id="null"></a-mixin>
             </assets>
             <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
             <a-text position="0 1.833 -0.5" color="green" align="center" value="dev-info" dev-info=""></a-text>
             <a-box position="0 0.917 -2.42" scale="1.061 1 1" material="color:#8080c0"></a-box>
-            <a-entity>
+            <a-entity id="tracked" track-add-remove>
+                <a-camera fix-cam track></a-camera>
                 <a-box position="0 0.679 -1.142" material="color:#400040" mixin="null" track=""></a-box>
             </a-entity>
-            <a-camera fix-cam track></a-camera>
         </a-scene>
     </div>
     <div id="rest">

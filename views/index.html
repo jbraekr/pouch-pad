@@ -1,63 +1,61 @@
 <html>
-
-<head>
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <script src="https://cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js"></script>
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <link id="favicon" rel="icon" href="//glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <title>A pouchdb which syncs a bit</title>
-</head>
-
-<body>
+  </head>
+  <body>
     <div id="copy" style="">
-        <div class="glitchButton" style="float:right">
-            glitch
+      <div class="glitchButton" style="float:right">
+        glitch
             <br>button
-        </div>
-        <h3>A pouchdb which syncs a bit
+        
+      
+      </div>
+      <h3>A pouchdb which syncs a bit
         </h3>
-        <hr> Edit:
+      <hr>
+      Edit:
         <span id="edit" contenteditable="true" style="display: inline-block;min-width:1em;border-style: dotted"></span>
-        <hr>
-        <div style="line-height: 200%">
-            <button onclick="test()">Visit Mittens</button>
-            &nbsp;&nbsp;
-            <a href="/index.html" target="_blank">Dup</a>
-            &nbsp;&nbsp;
-            <a href="/aframe.html">AFrame</a>
-            &nbsp;&nbsp;
-            <a href="/inspector.html">Inspector</a>
-            &nbsp;&nbsp;
-            <a href="/c/test.html">Test</a>
-            &nbsp;&nbsp;
-            <a href="https://time.is/" target="_blank">Time.is</a>
-            &nbsp;&nbsp;
-            <a href="/_utils/" target="_blank">Fauxton(Config-Gui)</a>
-            &nbsp;&nbsp;
-            <a href="https://uhr.ptb.de/" target="_blank">PTB Uhr</a>
-            &nbsp;&nbsp;
-            <a href="https://pouchdb.com/guides/databases.html" target="_blank">Working with databases</a>
-        </div>
-        <hr>
+      <hr>
+      <div style="line-height: 200%">
+        <button onclick="test()">Visit Mittens</button>
+        &nbsp;&nbsp;<a href="/index.html" target="_blank">Dup</a>
+        &nbsp;&nbsp;<a href="/aframe.html">AFrame</a>
+        &nbsp;&nbsp;<a href="/inspector.html">Inspector</a>
+        &nbsp;&nbsp;<a href="/c/test.html">Test</a>
+        &nbsp;&nbsp;<a href="https://time.is/" target="_blank">Time.is</a>
+        &nbsp;&nbsp;<a href="/_utils/" target="_blank">Fauxton(Config-Gui)</a>
+        &nbsp;&nbsp;<a href="https://uhr.ptb.de/" target="_blank">PTB Uhr</a>
+        &nbsp;&nbsp;<a href="https://pouchdb.com/guides/databases.html" target="_blank">Working with databases</a>
+      </div>
+      <hr>
     </div>
     <script src="/c/config.js"></script>
     <script src="/c/aframe.js"></script>
     <div id="scene">
-        <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false" track-changes>
-            <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
-            <a-text position="0 1.833 -0.5" color="green" align="center" value="dev-info" dev-info=""></a-text>
-            <a-box></a-box>
-            <a-camera fix-cam></a-camera>
-        </a-scene>
+      <a-scene embedded style="width:100%;height:20%" vr-mode-ui="enabled: false" track-changes>
+        <assets>
+          <a-mixin id="null"></a-mixin>
+        </assets>
+        <a-text position="0 1.6 -.5" color="blue" align="center" value="Hello World!"></a-text>
+        <a-text position="0 1.833 -0.5" color="green" align="center" value="dev-info" dev-info=""></a-text>
+        <a-box></a-box>
+        <a-entity>
+          <a-box position="0 0 -2.461" material="color:#400040" mixin="null"></a-box>
+        </a-entity>
+        <a-camera fix-cam></a-camera>
+      </a-scene>
     </div>
     <div id="rest">
-        <hr>
-        <pre id="status">Setting up</pre>
-        <hr>
-        <pre id="echo"></pre>
+      <hr>
+      <pre id="status">Setting up</pre>
+      <hr>
+      <pre id="echo"></pre>
     </div>
     <script src="/c/main.js"></script>
-</body>
-
+  </body>
 </html>

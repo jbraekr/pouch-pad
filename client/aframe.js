@@ -39,6 +39,6 @@ AFRAME.registerComponent('track-changes', {
 });
 
 function logEvt(s, evt) {
-  console.log(s, evt, evt.path, evt.detail.el);
+  console.log(s, [evt, evt.path], evt.detail.el);
 
 }

@@ -170,14 +170,26 @@ async function show(first) {
         var now = new Date();
         var lag = "Mittens visited " + form(now - new Date(doc.visited.at), 8) + " ms ago";
         console.log(doc, lag);
-        document.getElementById("echo").innerText = JSON.stringify([lag, now.toJSON(), doc], null, 2);
+        document.getElementById("echo").innerText = `${doc.aScene}\n${JSON.stringify([lag, now.toJSON(), , doc], null, 2)}`;
         if (first) {
             console.log("setup scene");
         }
         //update scene
         //console.log(doc.aScene);
         if (doc.visited.by !== main.local.name || first) {
-            document.getElementById('tracked').innerHTML = doc.aScene;
+
+            var entityEl = document.getElementById('tracked');
+            entityEl.parentNode.removeChild(entityEl);
+
+            var entityEl = document.createElement('a-entity');
+            entityEl.setAttribute('id', 'tracked');
+            entityEl.setAttribute('track-add-remove', '');
+            entityEl.innerHTML = doc.aScene;
+
+            var sceneEl = document.querySelector('a-scene');
+            sceneEl.appendChild(entityEl);
+
+            //document.getElementById('tracked').innerHTML = doc.aScene;
         }
     } catch (err) {
         console.log("show");

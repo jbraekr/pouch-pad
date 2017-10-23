@@ -2,10 +2,10 @@ console.log('sourcelink');
 
 var CACHE_NAME = 'pouch-pad-v1';
 var urlsToCache = [
-    "//cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js",
+    "https://cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js",
     "https://aframe.io/releases/0.7.0/aframe.min.js",
     "https://cdn.aframe.io/fonts/Roboto-msdf.json",
-    "https://cdn.aframe.io/fonts/Roboto-msdf.png",
+    "https://cdn.aframe.io/fonts/Roboto-msdf.png","https://unpkg.com/aframe-inspector@0.7.x/dist/aframe-inspector.min.js",
 ];
 
 self.addEventListener('install', function (event) {

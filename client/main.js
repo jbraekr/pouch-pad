@@ -16,6 +16,8 @@ var db = new PouchDB('kittens', {
 start();
 
 async function start() {
+    var now = new Date();
+
     main.net = "syncing";
     status();
 
@@ -39,8 +41,6 @@ async function start() {
     console.log("remote", info);
     var info = await db.info();
     console.log("local", info);
-
-    var now = new Date();
 
     try {
         var doc = await db.get(main.local.name);

@@ -134,17 +134,16 @@ if (!ownPouch) {
   ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
   console.log("\nname", ist.main.local.name);
 
+  saveAScene();
+
   db.changes({
     since: 'now',
     live: true,
-    include_docs: true,
   }).on('change', function (change) {
     // received a change
     console.log('change', change);
     if (!change.deleted && change.id === "mittens") {
-      fs.writeFile(root + '/sync/ascene.html', change.doc.aScene, function (err) {
-        console.log("wrote mittens?", err);
-      });
+      saveAScene(); //makes await sense?
     }
   }).on('error', function (err) {
     // handle errors
@@ -153,7 +152,19 @@ if (!ownPouch) {
 
 })();
 
-
+async function saveAScene() {
+  try {
+    var doc = await db.get('mittens');
+  } catch (err) {
+    if (err.name !== 'not_found')
+      throw err;
+    console.log('no mittens yet');
+    return;
+  }
+  fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
+    console.log("wrote mittens or", err);
+  });
+}
 
 
 var port = process.env.PORT || port;

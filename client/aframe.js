@@ -5,7 +5,7 @@ AFRAME.registerComponent('dev-info', {
     var c = document.getElementsByTagName('a-camera')[0];
     var pc = c.getAttribute('position').y;
 
-    this.el.setAttribute('text', 'value', `cam.y: ${pc.toPrecision(3)} `);
+    this.el.setAttribute('text', 'value', `cam.y: ${pc.toPrecision(3)}\nnet: ${main.net}`);
   }
 });
 

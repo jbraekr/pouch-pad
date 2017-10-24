@@ -118,28 +118,6 @@ async function test() {
     }
 }
 
-async function getMittens() {
-    var now = new Date().toJSON();
-    try {
-        var doc = await db.get("mittens");
-    } catch (err) {
-        if (err.name !== 'not_found')
-            throw err;
-        var doc = {
-            "_id": "mittens",
-            "name": "Mittens",
-            "born": now,
-        }
-    }
-    Object.assign(doc, {
-        "visited": {
-            at: now,
-            by: main.local.name
-        },
-    });
-    return doc;
-}
-
 async function pushPouch() {
     var doc = await getMittens();
     var old = doc.aScene;

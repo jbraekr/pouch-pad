@@ -5,7 +5,10 @@ var urlsToCache = [
     "https://cdn.jsdelivr.net/pouchdb/latest/pouchdb.min.js",
     "https://aframe.io/releases/0.7.0/aframe.min.js",
     "https://cdn.aframe.io/fonts/Roboto-msdf.json",
-    "https://cdn.aframe.io/fonts/Roboto-msdf.png","https://unpkg.com/aframe-inspector@0.7.x/dist/aframe-inspector.min.js",
+    "https://cdn.aframe.io/fonts/Roboto-msdf.png",
+    "https://unpkg.com/aframe-inspector@0.7.x/dist/aframe-inspector.min.js",
+    "https://ucarecdn.com/widget/2.10.0/uploadcare/uploadcare.full.min.js",
+    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css",
 ];
 
 self.addEventListener('install', function (event) {

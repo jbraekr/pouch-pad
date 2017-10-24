@@ -130,6 +130,8 @@ if (!ownPouch) {
 (async function () {
   var info = await db.info();
   console.log("db", info);
+  var now = new Date().toJSON();
+  ist.main.local.name = "couch/" + now;
 })();
 
 

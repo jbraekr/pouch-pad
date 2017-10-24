@@ -1,10 +1,12 @@
 if (typeof window === 'undefined') {
     var PouchDB = require('pouchdb');
     var config = { db: undefined };
+    var main = { local: { name: undefined } };
     module.exports = {
         getMittens: getMittens,
         connectRemoteDb: connectRemoteDb,
         config: config,
+        main: main,
     }
 
 } else {

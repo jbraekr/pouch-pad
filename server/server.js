@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var path = require("path");
+const cheerio = require('cheerio');
 
 var ist = require('../client/inServerToo');
 
@@ -30,14 +31,22 @@ app.use(function (req, res, next) {
 app.get("/", function (request, response) {
   response.redirect('/index.html');
 });
-app.get("/index.html", function (request, response) {
-  response.sendFile(root + '/views/index.html');
+app.get("/index.html", async function (request, response) {
+  var $ = await indexify();
+  response.send($.html());
 });
 app.get("/service-worker.js", function (request, response) {
   response.sendFile(root + '/service-worker.js');
 });
 
-
+async function indexify() {
+  var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
+  const $ = cheerio.load(s);
+  var sc = await promisify(fs.readFile)(root + '/sync/ascene_default.html', 'utf8');
+  $('#tracked').html(sc);
+  //console.log($('#tracked').html());
+  return $;
+}
 
 app.get("/aframe.html", async function (request, response) {
   var $ = await aframify();
@@ -52,10 +61,7 @@ app.get("/inspector.html", async function (request, response) {
 });
 
 async function aframify() {
-  const cheerio = require('cheerio');
-  var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
-  const $ = cheerio.load(s);
-  $('#glitch').remove();
+  var $ = await indexify();
   $('#copy').remove();
   $('#rest').attr('hidden', "true");
   var s = $('a-scene');
@@ -70,16 +76,12 @@ async function aframify() {
 (async function () {
   if (!false) return;
   try {
-    var s = await aframify();
-    console.log(s.html())
+    var s = await indexify();
+    //console.log(s.html())
   } catch (e) {
     console.log(e);
   }
 })(); //test
-
-
-
-
 
 
 
@@ -127,6 +129,7 @@ if (!ownPouch) {
 
 
 
+
 (async function () {
   var info = await db.info();
   console.log("db", info);
@@ -141,8 +144,8 @@ if (!ownPouch) {
     live: true,
   }).on('change', function (change) {
     // received a change
-    console.log('change', change);
     if (!change.deleted && change.id === "mittens") {
+      //console.log('change', change);
       saveAScene(); //makes await sense?
     }
   }).on('error', function (err) {
@@ -162,9 +165,13 @@ async function saveAScene() {
     return;
   }
   fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
-    console.log("wrote mittens or", err);
+    var now = new  Date().toJSON();
+    if (err) console.log("writing mittens", now, err);
+    else console.log("wrote mittens", now);
   });
 }
+
+
 
 
 var port = process.env.PORT || port;

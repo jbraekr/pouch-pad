@@ -16,13 +16,8 @@ var db = new PouchDB('kittens', {
 start();
 
 async function start() {
+    main.net = "syncing";
     status();
-    var info = await remoteDB.info();
-    console.log("remote", info);
-    var info = await db.info();
-    console.log("local", info);
-
-    var now = new Date();
 
     try {
         var s2 = JSON.parse(sessionStorage.getItem('me'));
@@ -37,6 +32,15 @@ async function start() {
         };
         sessionStorage.setItem('me', JSON.stringify(main.local));
     }
+
+    firstShow();
+    
+    var info = await remoteDB.info();
+    console.log("remote", info);
+    var info = await db.info();
+    console.log("local", info);
+
+    var now = new Date();
 
     try {
         var doc = await db.get(main.local.name);
@@ -58,7 +62,6 @@ async function start() {
         console.log("first sync", info);
         main.net = "complete";
         status();
-        firstShow();
         sync();
         installServiceworker();
     }).on('error', function (err) {

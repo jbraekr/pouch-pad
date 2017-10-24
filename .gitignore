@@ -5,6 +5,9 @@
 /package-lock.json
 /config.json
 
+/sync/*
+!/sync/.placeholder
+
 /.db/*
 !/.db/.placeholder
 

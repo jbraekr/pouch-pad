@@ -131,7 +131,26 @@ if (!ownPouch) {
   var info = await db.info();
   console.log("db", info);
   var now = new Date().toJSON();
-  ist.main.local.name = "couch/" + now;
+  ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
+  console.log("\nname", ist.main.local.name);
+
+  db.changes({
+    since: 'now',
+    live: true,
+    include_docs: true,
+  }).on('change', function (change) {
+    // received a change
+    console.log('change', change);
+    if (!change.deleted && change.id === "mittens") {
+      fs.writeFile(root + '/sync/ascene.html', change.doc.aScene, function (err) {
+        console.log("wrote mittens?", err);
+      });
+    }
+  }).on('error', function (err) {
+    // handle errors
+    console.log('change', change);
+  });
+
 })();
 
 

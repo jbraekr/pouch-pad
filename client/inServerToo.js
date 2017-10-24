@@ -1,9 +1,26 @@
 if (typeof window === 'undefined') {
+    var PouchDB = require('pouchdb');
+    var config = { db: undefined };
     module.exports = {
         getMittens: getMittens,
+        connectRemoteDb: connectRemoteDb,
+        config: config,
     }
+
 } else {
+    var ist = window;
 }
+
+function connectRemoteDb() {
+    var remoteDB = new PouchDB(config.db, {
+        ajax: {
+            withCredentials: false,
+            auto_compaction: true,
+        }
+    });
+    return remoteDB;
+}
+
 
 async function getMittens() {
     var now = new Date().toJSON();

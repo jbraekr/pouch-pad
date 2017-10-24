@@ -41,7 +41,7 @@
             "info": "external db",
             "program": "${workspaceFolder}/server/server.js",
             "env": {
-                "DB": "http://192.168.43.193:3000/db/kittens"
+                "DB": "http://127.0.0.1:3000/db/kittens"
             },
             "showAsyncStacks": true
         }

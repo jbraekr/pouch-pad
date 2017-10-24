@@ -97,7 +97,11 @@ app.use('/c', express.static('client'));
 
 
 if (!ownPouch) {
+
   var port = 3001;
+  ist.config.db = dbUrl;
+  var db = ist.connectRemoteDb();
+
 } else {
   var port = 3000;
   var PouchDB = require('pouchdb');
@@ -120,6 +124,13 @@ if (!ownPouch) {
     */
 
 }
+
+
+
+(async function () {
+  var info = await db.info();
+  console.log("db", info);
+})();
 
 
 

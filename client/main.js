@@ -7,12 +7,7 @@ var main = {};
 
 main.original = document.getElementById('tracked').innerHTML;
 
-var remoteDB = new PouchDB(config.db, {
-    ajax: {
-        withCredentials: false,
-        auto_compaction: true,
-    }
-});
+var remoteDB = ist.connectRemoteDb();
 
 var db = new PouchDB('kittens', {
     auto_compaction: true
@@ -105,7 +100,7 @@ function sync() {
 }
 
 async function test() {
-    var doc = await getMittens();
+    var doc = await ist.getMittens();
     await db.put(doc);
     console.log("test", doc);
     document.getElementById("echo").innerText = JSON.stringify(["push", doc.visited.at], null, 2);

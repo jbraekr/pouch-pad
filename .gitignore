@@ -1,8 +1,13 @@
 /pad*
 /log*
+*.bak
 /node_modules/
 /package-lock.json
 /config.json
+
+/sync/*
+!/sync/.placeholder
+!/sync/*_default.*
 
 /.db/*
 !/.db/.placeholder

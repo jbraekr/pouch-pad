@@ -14,6 +14,13 @@
         {
             "type": "chrome",
             "request": "launch",
+            "name": "inspector",
+            "url": "http://localhost:3000/inspector.html",
+            "webRoot": "${workspaceRoot}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
             "name": "a",
             "info": "aframe chrome",
             "url": "http://localhost:3001/aframe.html",
@@ -34,7 +41,7 @@
             "info": "external db",
             "program": "${workspaceFolder}/server/server.js",
             "env": {
-                "DB": "http://192.168.43.193:3000/db/kittens"
+                "DB": "http://127.0.0.1:3000/db/kittens"
             },
             "showAsyncStacks": true
         }

@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node es5/server.js",
-    "fauxton": "fauxton",
-    "standalone": "pouchdb-server --dir .db",
+    "start": "tsc && echo compiled && node es5/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,7 +12,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "cors": "^2.8.4",
-    "express": "^4.16.1",
+    "express": "^4.16.2",
     "express-pouchdb": "^2.3.7",
     "pouchdb": "^6.3.4",
     "pouchdb-server": "^2.3.7",

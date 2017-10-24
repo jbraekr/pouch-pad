@@ -1,9 +1,14 @@
 console.log(__filename);
+
+var path = require("path");
+var root = path.join(__dirname, '../..');
+
 var express = require('express');
 var app = express();
 var fs = require('fs');
-var path = require("path");
 const cheerio = require('cheerio');
+
+var ist = require('../client/inServerToo');
 
 var util = require('util');
 const promisify = require('util.promisify'); //pre 8 compat
@@ -16,25 +21,34 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-var root = path.join(__dirname, '..');
 
 
 
 
 app.use(function (req, res, next) {
-  if (!/^(\/db|\/$|\/\w*.html$|\/c\/)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
+  if (!/^(\/db|\/$|\/\w*\.html$|\/c\/|\/service-worker\.js$)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
   next();
 });
 
 app.get("/", function (request, response) {
   response.redirect('/index.html');
 });
-app.get("/index.html", function (request, response) {
-  response.sendFile(root + '/views/index.html');
+app.get("/index.html", async function (request, response) {
+  var $ = await indexify();
+  response.send($.html());
+});
+app.get("/service-worker.js", function (request, response) {
+  response.sendFile(root + '/service-worker.js');
 });
 
-
-
+async function indexify() {
+  var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
+  const $ = cheerio.load(s);
+  var sc = await promisify(fs.readFile)(root + '/sync/ascene_default.html', 'utf8');
+  $('#tracked').html(sc);
+  //console.log($('#tracked').html());
+  return $;
+}
 
 app.get("/aframe.html", async function (request, response) {
   var $ = await aframify();
@@ -49,9 +63,7 @@ app.get("/inspector.html", async function (request, response) {
 });
 
 async function aframify() {
-  var s = await promisify(fs.readFile)(root + '/views/index.html', 'utf8');
-  const $ = cheerio.load(s);
-  $('#glitch').remove();
+  var $ = await indexify();
   $('#copy').remove();
   $('#rest').attr('hidden', "true");
   var s = $('a-scene');
@@ -66,16 +78,12 @@ async function aframify() {
 (async function () {
   if (!false) return;
   try {
-    var s = await aframify();
-    console.log(s.html())
+    var s = await indexify();
+    //console.log(s.html())
   } catch (e) {
     console.log(e);
   }
 })(); //test
-
-
-
-
 
 
 
@@ -87,13 +95,17 @@ app.get("/c/config.js", function (request, response) {
 });
 
 app.use('/c', express.static('public'));
-app.use('/c', express.static('client'));
+app.use('/c', express.static('src_es6/client'));
 
 
 
 
 if (!ownPouch) {
+
   var port = 3001;
+  ist.config.db = dbUrl;
+  var db = ist.connectRemoteDb();
+
 } else {
   var port = 3000;
   var PouchDB = require('pouchdb');
@@ -120,7 +132,53 @@ if (!ownPouch) {
 
 
 
+(async function () {
+  var info = await db.info();
+  console.log("db", info);
+  var now = new Date().toJSON();
+  
+  console.log(port, ownPouch, dbUrl, now);
+
+  ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
+  console.log("\nname", ist.main.local.name);
+
+  saveAScene();
+
+  db.changes({
+    since: 'now',
+    live: true,
+  }).on('change', function (change) {
+    // received a change
+    if (!change.deleted && change.id === "mittens") {
+      //console.log('change', change);
+      saveAScene(); //makes await sense?
+    }
+  }).on('error', function (err) {
+    // handle errors
+    console.log('change', err);
+  });
+
+})();
+
+async function saveAScene() {
+  try {
+    var doc = await db.get('mittens');
+  } catch (err) {
+    if (err.name !== 'not_found')
+      throw err;
+    console.log('no mittens yet');
+    return;
+  }
+  fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
+    var now = new  Date().toJSON();
+    if (err) console.log("writing mittens", now, err);
+    else console.log("wrote mittens", now);
+  });
+}
+
+
+
+
 var port = process.env.PORT || port;
 app.listen(port);//5984
-console.log(port, ownPouch, dbUrl);
 

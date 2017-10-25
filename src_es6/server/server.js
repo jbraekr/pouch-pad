@@ -3,6 +3,8 @@ console.log(__filename);
 var path = require("path");
 var root = path.join(__dirname, '../..');
 
+var onGlitch = !!process.env.PROJECT_DOMAIN;
+
 var express = require('express');
 var app = express();
 var fs = require('fs');
@@ -35,6 +37,10 @@ app.get("/", function (request, response) {
 });
 app.get("/index.html", async function (request, response) {
   var $ = await indexify();
+  if (onGlitch) {
+    $('head').append('<script id="glitch" src="//button.glitch.me/button.js"></script>');
+    $('.glitchButton').html('');
+  }
   response.send($.html());
 });
 app.get("/service-worker.js", function (request, response) {
@@ -171,8 +177,11 @@ async function saveAScene() {
   }
   fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
     var now = new  Date().toJSON();
-    if (err) console.log("writing mittens", now, err);
-    else console.log("wrote mittens", now);
+    if (err) console.log("writing mittens failed", now, err);
+    else {
+      console.log("wrote mittens", now);
+      //thought i can refresh glitch with a call to "refresh", but that restarts server and recurses :-(
+    }
   });
 }
 

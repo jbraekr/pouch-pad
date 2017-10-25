@@ -1,4 +1,4 @@
-console.log('sourcelink');
+console.log('\nsourcelink\n');
 
 AFRAME.registerComponent('dev-info', {
   tick: function (time, timeDelta) {
@@ -44,11 +44,18 @@ AFRAME.registerComponent('track-add-remove', {
 });
 
 AFRAME.registerComponent('track', {
+  schema: {
+    not: { type: 'string', default: '' }
+  },
   init: function () {
+    var my = this;
     this.el.addEventListener('componentchanged', function (evt) {
       evt.detail.target.flushToDOM();
       //console.log('evt componentchanged', [evt, evt.path], evt.detail.target);
-      pushPouch();
+      if (my.data.not !== evt.detail.name) {
+        //console.log("track", [evt], my, my.data, evt.detail.name, evt.detail.target);
+        pushPouch();
+      }
     });
   }
 });

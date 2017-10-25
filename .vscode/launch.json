@@ -23,7 +23,7 @@
             "request": "launch",
             "name": "a",
             "info": "aframe chrome",
-            "url": "http://localhost:3001/aframe.html",
+            "url": "http://localhost:3000/aframe.html",
             "webRoot": "${workspaceRoot}"
         },
         {

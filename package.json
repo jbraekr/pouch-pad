@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && echo compiled && node es5/server.js",
+    "start": "tsc && echo compiled && node es5/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

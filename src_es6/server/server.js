@@ -1,8 +1,13 @@
 console.log(__filename);
+
+var path = require("path");
+var root = path.join(__dirname, '../..');
+
+var onGlitch = !!process.env.PROJECT_DOMAIN;
+
 var express = require('express');
 var app = express();
 var fs = require('fs');
-var path = require("path");
 const cheerio = require('cheerio');
 
 var ist = require('../client/inServerToo');
@@ -18,7 +23,6 @@ if (process.env.DB) {
   var dbUrl = '/db/kittens';
 }
 
-var root = path.join(__dirname, '..');
 
 
 
@@ -33,6 +37,10 @@ app.get("/", function (request, response) {
 });
 app.get("/index.html", async function (request, response) {
   var $ = await indexify();
+  if (onGlitch) {
+    $('head').append('<script id="glitch" src="//button.glitch.me/button.js"></script>');
+    $('.glitchButton').html('');
+  }
   response.send($.html());
 });
 app.get("/service-worker.js", function (request, response) {
@@ -93,7 +101,7 @@ app.get("/c/config.js", function (request, response) {
 });
 
 app.use('/c', express.static('public'));
-app.use('/c', express.static('client'));
+app.use('/c', express.static('src_es6/client'));
 
 
 
@@ -134,6 +142,9 @@ if (!ownPouch) {
   var info = await db.info();
   console.log("db", info);
   var now = new Date().toJSON();
+  
+  console.log(port, ownPouch, dbUrl, now);
+
   ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
   console.log("\nname", ist.main.local.name);
 
@@ -150,7 +161,7 @@ if (!ownPouch) {
     }
   }).on('error', function (err) {
     // handle errors
-    console.log('change', change);
+    console.log('change', err);
   });
 
 })();
@@ -166,8 +177,11 @@ async function saveAScene() {
   }
   fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
     var now = new  Date().toJSON();
-    if (err) console.log("writing mittens", now, err);
-    else console.log("wrote mittens", now);
+    if (err) console.log("writing mittens failed", now, err);
+    else {
+      console.log("wrote mittens", now);
+      //thought i can refresh glitch with a call to "refresh", but that restarts server and recurses :-(
+    }
   });
 }
 
@@ -176,5 +190,4 @@ async function saveAScene() {
 
 var port = process.env.PORT || port;
 app.listen(port);//5984
-console.log(port, ownPouch, dbUrl);
 

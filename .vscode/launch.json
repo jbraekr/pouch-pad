@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "indb",
             "info": "internal db",
-            "program": "${workspaceFolder}/server/server.js"
+            "program": "${workspaceFolder}/src_es6/server/server.js"
         },
         {
             "type": "chrome",
@@ -23,7 +23,7 @@
             "request": "launch",
             "name": "a",
             "info": "aframe chrome",
-            "url": "http://localhost:3001/aframe.html",
+            "url": "http://localhost:3000/aframe.html",
             "webRoot": "${workspaceRoot}"
         },
         {
@@ -39,7 +39,7 @@
             "request": "launch",
             "name": "exdb",
             "info": "external db",
-            "program": "${workspaceFolder}/server/server.js",
+            "program": "${workspaceFolder}/src_es6/server/server.js",
             "env": {
                 "DB": "http://127.0.0.1:3000/db/kittens"
             },

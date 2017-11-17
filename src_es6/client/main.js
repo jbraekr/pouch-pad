@@ -36,7 +36,7 @@ async function start() {
     }
 
     firstShow();
-    
+
     var info = await remoteDB.info();
     console.log("remote", info);
     var info = await db.info();
@@ -144,9 +144,9 @@ async function show(first) {
     try {
         var doc = await db.get("mittens");
         var now = new Date();
-        var lag = "Mittens visited " + form(now - new Date(doc.visited.at), 8) + " ms ago";
+        var lag = `Mittens was visited ${form(now - new Date(doc.visited.at), 8)} ms ago at ${doc.visited.at}`;
         console.log(doc, lag);
-        document.getElementById("echo").innerText = `${doc.aScene}\n${JSON.stringify([lag, now.toJSON(), , doc], null, 2)}`;
+        document.getElementById("echo").innerText = `${lag}\n${doc.aScene}\n${JSON.stringify(doc, null, 2)}`;
         if (first) {
             console.log("setup scene");
         }

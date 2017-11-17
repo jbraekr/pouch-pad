@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && echo compiled && node es5/server/server.js",
+    "es6": "node src_es6/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

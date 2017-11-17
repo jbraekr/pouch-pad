@@ -2,7 +2,7 @@
 Pouch-pad
 ===
 
-First: create admin! Run itand pick fauxton.
+First: create admin! Run it and pick fauxton.
 
 OnlineDemo
 ---

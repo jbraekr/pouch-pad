@@ -1,3 +1,4 @@
+"use strict";
 console.log(__filename);
 
 var path = require("path");
@@ -191,8 +192,24 @@ async function saveAScene() {
   });
 }
 
+//
+//
 
+// Example when handled through fs.watch listener
+fs.watch(root + '/sync/ascene.html', {}, async (eventType, filename) => {
+  if (filename) {
+    console.log(filename);
+  }
+});
 
+//
+// Start
+
+ist.main.db = db;
+ist.run(async function () {
+    var doc = await ist.getMittens();
+    db.put(doc);
+});
 
 var port = process.env.PORT || port;
 app.listen(port);//5984

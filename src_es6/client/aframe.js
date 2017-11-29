@@ -1,4 +1,10 @@
+"use strict";
 console.log('\nsourcelink\n');
+
+// simulate imports
+var AFRAME;
+var main;
+var pushPouch;
 
 AFRAME.registerComponent('dev-info', {
   tick: function (time, timeDelta) {

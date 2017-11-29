@@ -196,19 +196,32 @@ async function saveAScene() {
 //
 
 // Example when handled through fs.watch listener
-fs.watch(root + '/sync/ascene.html', {}, async (eventType, filename) => {
-  if (filename) {
-    console.log(filename);
+var sceneFile = root + '/sync/ascene.html';
+var diskScene = null;
+fs.watch(sceneFile, {}, ist.wrap(async (eventType, filename) => {
+  //console.log(eventType, filename);
+  var s = await up(fs.readFile, sceneFile, 'utf8');
+  var doc = await ist.getMittens();
+  if (s !== diskScene && doc.aScene !== s) {
+    console.log(sceneFile + " changed " + new Date().toJSON());
+    diskScene = s;
+    doc.aScene = s;
+    db.put(doc);
   }
-});
+}));
+
+/** short for util.promise */
+function up(f, ...a) {
+  return promisify(f)(...a);
+}
 
 //
 // Start
 
 ist.main.db = db;
 ist.run(async function () {
-    var doc = await ist.getMittens();
-    db.put(doc);
+  var doc = await ist.getMittens();
+  db.put(doc);
 });
 
 var port = process.env.PORT || port;

@@ -10,6 +10,7 @@ if (typeof window === 'undefined') {
         config: config,
         main: main,
         run: run,
+        wrap: wrap,
     }
 
 } else {
@@ -17,12 +18,18 @@ if (typeof window === 'undefined') {
 }
 
 async function run(f) {
-    try {
-        return await f();
-    } catch (e) {
-        console.log(f.toString(), f);
-        console.log(e);
-        throw e;
+    wrap(f)();
+}
+
+function wrap(f) {
+    return function (...a) {
+        try {
+            return f(...a);
+        } catch (e) {
+            console.log(f.toString(), f);
+            console.log(e);
+            throw e;
+        }
     }
 }
 

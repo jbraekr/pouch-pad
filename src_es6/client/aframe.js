@@ -1,10 +1,5 @@
 console.log('\nsourcelink\n');
 
-// imports
-var AFRAME;
-var main;
-var  pushPouch;
-
 AFRAME.registerComponent('dev-info', {
   tick: function (time, timeDelta) {
     var c = document.getElementsByTagName('a-camera')[0];
@@ -58,7 +53,7 @@ AFRAME.registerComponent('track', {
       evt.detail.target.flushToDOM();
       //console.log('evt componentchanged', [evt, evt.path], evt.detail.target);
       if (my.data.not !== evt.detail.name) {
-        console.log("track push", evt.detail.name, "@", evt.detail.target);
+        //console.log("track", [evt], my, my.data, evt.detail.name, evt.detail.target);
         pushPouch();
       }
     });

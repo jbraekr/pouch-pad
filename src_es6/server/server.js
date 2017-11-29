@@ -1,3 +1,4 @@
+"use strict";
 console.log(__filename);
 
 var path = require("path");
@@ -29,6 +30,7 @@ if (process.env.DB) {
 
 app.use(function (req, res, next) {
   if (!/^(\/db|\/$|\/\w*\.html$|\/c\/|\/service-worker\.js$)/.test(req.url)) req.url = req.originalUrl = '/db' + req.url;
+  console.log(req.url);
   next();
 });
 
@@ -100,8 +102,8 @@ app.get("/c/config.js", function (request, response) {
   `);
 });
 
-app.use('/c', express.static('public'));
-app.use('/c', express.static('src_es6/client'));
+app.use('/c', express.static(root + '/public'));
+app.use('/c', express.static(root + '/src_es6/client'));
 
 
 
@@ -139,31 +141,36 @@ if (!ownPouch) {
 
 
 (async function () {
-  var info = await db.info();
-  console.log("db", info);
-  var now = new Date().toJSON();
-  
-  console.log(port, ownPouch, dbUrl, now);
+  try {
+    var info = await db.info();
+    console.log("db", info);
 
-  ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
-  console.log("\nname", ist.main.local.name);
+    var now = new Date().toJSON();
 
-  saveAScene();
+    console.log(port, ownPouch, dbUrl, now);
 
-  db.changes({
-    since: 'now',
-    live: true,
-  }).on('change', function (change) {
-    // received a change
-    if (!change.deleted && change.id === "mittens") {
-      //console.log('change', change);
-      saveAScene(); //makes await sense?
-    }
-  }).on('error', function (err) {
-    // handle errors
-    console.log('change', err);
-  });
+    ist.main.local.name = (ownPouch ? "couch/" : "pouch/") + now;
+    console.log("\nname", ist.main.local.name);
 
+    saveAScene();
+
+    db.changes({
+      since: 'now',
+      live: true,
+    }).on('change', function (change) {
+      // received a change
+      if (!change.deleted && change.id === "mittens") {
+        //console.log('change', change);
+        saveAScene(); //makes await sense?
+      }
+    }).on('error', function (err) {
+      // handle errors
+      console.log('change', err);
+    });
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
 })();
 
 async function saveAScene() {
@@ -176,7 +183,7 @@ async function saveAScene() {
     return;
   }
   fs.writeFile(root + '/sync/ascene.html', doc.aScene, function (err) {
-    var now = new  Date().toJSON();
+    var now = new Date().toJSON();
     if (err) console.log("writing mittens failed", now, err);
     else {
       console.log("wrote mittens", now);
@@ -185,8 +192,37 @@ async function saveAScene() {
   });
 }
 
+//
+//
 
+// Example when handled through fs.watch listener
+var sceneFile = root + '/sync/ascene.html';
+var diskScene = null;
+fs.watch(sceneFile, {}, ist.wrap(async (eventType, filename) => {
+  //console.log(eventType, filename);
+  var s = await up(fs.readFile, sceneFile, 'utf8');
+  var doc = await ist.getMittens();
+  if (s !== diskScene && doc.aScene !== s) {
+    console.log(sceneFile + " changed " + new Date().toJSON());
+    diskScene = s;
+    doc.aScene = s;
+    db.put(doc);
+  }
+}));
 
+/** short for util.promise */
+function up(f, ...a) {
+  return promisify(f)(...a);
+}
+
+//
+// Start
+
+ist.main.db = db;
+ist.run(async function () {
+  var doc = await ist.getMittens();
+  db.put(doc);
+});
 
 var port = process.env.PORT || port;
 app.listen(port);//5984

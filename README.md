@@ -2,14 +2,14 @@
 Pouch-pad
 ===
 
-First: create admin! Run itand pick fauxton.
+First: create admin! Run it and pick fauxton.
 
 OnlineDemo
 ---
 - [play](https://brave-can.glitch.me/)
 - [live source](https://glitch.com/edit/#!/brave-can)
 - [remix from github](https://glitch.com/edit/#!/import/github/jbraekr/pouch-pad)
-- [trying remix with auto-external db, access broken](ttps://glitch.com/edit/#!/import/github/jbraekr/pouch-pad?DB=https://brave-can.glitch.me/db/kitten)
+- [trying remix with auto-external db, access broken](https://glitch.com/edit/#!/import/github/jbraekr/pouch-pad?DB=https://brave-can.glitch.me/db/kitten)
 - [github](https://github.com/jbraekr/pouch-pad)
 
 Standalone server without server.js

@@ -9,7 +9,7 @@ main.original = document.getElementById('tracked').innerHTML;
 
 var remoteDB = ist.connectRemoteDb();
 
-var db = new PouchDB('kittens', {
+main.db = new PouchDB('kittens', {
     auto_compaction: true
 });
 
@@ -36,14 +36,14 @@ async function start() {
     }
 
     firstShow();
-    
+
     var info = await remoteDB.info();
     console.log("remote", info);
-    var info = await db.info();
+    var info = await main.db.info();
     console.log("local", info);
 
     try {
-        var doc = await db.get(main.local.name);
+        var doc = await main.db.get(main.local.name);
     } catch (err) {
         if (err.name !== 'not_found')
             throw err;
@@ -54,11 +54,11 @@ async function start() {
     Object.assign(doc, {
         "wokeUp": now,
     });
-    await db.put(doc);
+    await main.db.put(doc);
 
     status();
 
-    db.replicate.from(remoteDB).on('complete', function (info) {
+    main.db.replicate.from(remoteDB).on('complete', function (info) {
         console.log("first sync", info);
         main.net = "complete";
         status();
@@ -73,7 +73,7 @@ async function start() {
 }
 
 function sync() {
-    db.sync(remoteDB, {
+    main.db.sync(remoteDB, {
         live: true,
         retry: true
     }).on('change', function (change) {
@@ -104,7 +104,7 @@ function sync() {
 
 async function test() {
     var doc = await ist.getMittens();
-    await db.put(doc);
+    await main.db.put(doc);
     console.log("test", doc);
     document.getElementById("echo").innerText = JSON.stringify(["push", doc.visited.at], null, 2);
     document.getElementById('tracked').innerHTML = main.original;
@@ -123,7 +123,7 @@ async function pushPouch() {
     if (old !== nw) {
         doc.aScene = nw;
         //document.getElementById("echo").innerText = JSON.stringify(["push", doc.visited.at], null, 2);
-        await db.put(doc);
+        await main.db.put(doc);
     }
 }
 
@@ -142,11 +142,11 @@ function firstShow() {
 async function show(first) {
     console.log("show", first)
     try {
-        var doc = await db.get("mittens");
+        var doc = await main.db.get("mittens");
         var now = new Date();
-        var lag = "Mittens visited " + form(now - new Date(doc.visited.at), 8) + " ms ago";
+        var lag = `Mittens was visited ${form(now - new Date(doc.visited.at), 8)} ms ago at ${doc.visited.at}`;
         console.log(doc, lag);
-        document.getElementById("echo").innerText = `${doc.aScene}\n${JSON.stringify([lag, now.toJSON(), , doc], null, 2)}`;
+        document.getElementById("echo").innerText = `${lag}\n${doc.aScene}\n${JSON.stringify(doc, null, 2)}`;
         if (first) {
             console.log("setup scene");
         }

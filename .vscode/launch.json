@@ -12,7 +12,8 @@
             "env": {
                 "DB1": "http://127.0.0.1:3000/db/kittens",
                 "DB2": "http://127.0.0.1:5984/kittens",
-                "DB": "http://127.0.0.1:5984/kittens"
+                "DB3": "https://brave-can.glitch.me/db/kittens",
+                "DB": "https://brave-can.glitch.me/db/kittens"
             }
         },
         {
